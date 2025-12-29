@@ -114,30 +114,30 @@ function Main() {
           lifelong learning.
         </p>
       </div>
-     <div style={styles.questionSection}>
-  <h2 style={styles.questionHeading}>
-    Have any questions?
-  </h2>
+     <div style={styles.questionWrapper}>
+    <div style={styles.questionSection}>
+      <h2 style={styles.questionHeading}>Have any questions?</h2>
 
-  <textarea
-    style={styles.textarea}
-    placeholder="Type your question here..."
-    value={question}
-    onChange={(e) => setQuestion(e.target.value)}
-    onFocus={(e) =>
-      Object.assign(e.target.style, styles.textareaFocus)
-    }
-    onBlur={(e) =>
-      Object.assign(e.target.style, styles.textarea)
-    }
-  />
+      <textarea
+        style={styles.textarea}
+        placeholder="Type your question here..."
+        value={question}
+        onChange={(e) => setQuestion(e.target.value)}
+        onFocus={(e) =>
+          Object.assign(e.target.style, styles.textareaFocus)
+        }
+        onBlur={(e) =>
+          Object.assign(e.target.style, styles.textarea)
+        }
+      />
 
-  <button style={styles.submitBtn} onClick={bb}>
-    Submit Question
-  </button>
+      <button style={styles.submitBtn} onClick={bb}>
+        Submit Question
+      </button>
 
-  {status && <p>{status}</p>}
-</div>
+      {status && <p>{status}</p>}
+    </div>
+  </div>
 
     </div>
   );
@@ -145,14 +145,14 @@ function Main() {
 
 const styles = {
   page: {
-    minHeight: "100vh",
-    padding: "40px 16px",
-    background: "linear-gradient(135deg, #e0eafc, #cfdef3)",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "flex-start",
-    fontFamily: "Arial, sans-serif",
-  },
+  minHeight: "100vh",
+  padding: "40px 16px",
+  background: "linear-gradient(135deg, #e0eafc, #cfdef3)",
+  display: "flex",
+  flexDirection: "column",   // ✅ IMPORTANT
+  alignItems: "center",
+  fontFamily: "Arial, sans-serif",
+},
   container: {
     maxWidth: 900,
     backgroundColor: "#ffffff",
@@ -271,6 +271,13 @@ submitBtn: {
   letterSpacing: 0.5,
   transition: "transform 0.2s ease, box-shadow 0.2s ease",
 },
+questionWrapper: {
+  width: "100%",
+  maxWidth: 900,
+  marginTop: 30,       // pushes it DOWN
+  marginBottom: 40,
+},
+
 };
 
 export default Main;
