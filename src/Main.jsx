@@ -8,11 +8,10 @@ function Main() {
     <div style={styles.page}>
       <div style={styles.container}>
 
-        {/* TOP BUTTON */}
         <div style={styles.topBar}>
           <button
             style={styles.startBtn}
-            onClick={() => navigate("/Courses")}
+            onClick={() => navigate("/Name")}
           >
             Go to Courses
           </button>
