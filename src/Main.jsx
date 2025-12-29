@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import logo from "./images/logo.png";
 
 function Main() {
   const navigate = useNavigate();
@@ -8,6 +9,7 @@ function Main() {
     <div style={styles.page}>
       <div style={styles.container}>
 
+        {/* TOP BAR */}
         <div style={styles.topBar}>
           <button
             style={styles.startBtn}
@@ -15,6 +17,15 @@ function Main() {
           >
             Go to Courses
           </button>
+        </div>
+
+        {/* LOGO */}
+        <div style={styles.logoWrap}>
+          <img
+            src={logo}
+            alt="KiddoMind Logo"
+            style={styles.logo}
+          />
         </div>
 
         <h1 style={styles.title}>Welcome to KiddoMind</h1>
@@ -119,6 +130,16 @@ const styles = {
     backgroundColor: "#4CAF50",
     color: "#fff",
     cursor: "pointer",
+  },
+  logoWrap: {
+    display: "flex",
+    justifyContent: "center",
+    marginBottom: 15,
+  },
+  logo: {
+    width: 120,
+    maxWidth: "60%",
+    height: "auto",
   },
   title: {
     textAlign: "center",
