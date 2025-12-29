@@ -1,15 +1,35 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "./images/logo.png";
+import axios from "axios";
+import React, { useState } from "react";
 
 function Main() {
   const navigate = useNavigate();
+   const [question, setQuestion] = useState("");
+   const [status, setStatus] = useState("");
+  const bb=async()=>{
+   if (question.trim() === "") {
+      setStatus("Please write a question before submitting.");
+      return;
+    }
 
+    try {
+      const response = await axios.post(
+        "https://backendkiddomind.vercel.app/api/questions/ask",
+        { question }
+      );
+
+      setStatus(response.data.message);
+      setQuestion("");
+    } catch (error) {
+      setStatus("Something went wrong. Please try again.");
+    }
+  };
   return (
     <div style={styles.page}>
       <div style={styles.container}>
 
-        {/* TOP BAR */}
+
         <div style={styles.topBar}>
           <button
             style={styles.startBtn}
@@ -19,7 +39,6 @@ function Main() {
           </button>
         </div>
 
-        {/* LOGO */}
         <div style={styles.logoWrap}>
           <img
             src={logo}
@@ -95,6 +114,31 @@ function Main() {
           lifelong learning.
         </p>
       </div>
+     <div style={styles.questionSection}>
+  <h2 style={styles.questionHeading}>
+    Have any questions?
+  </h2>
+
+  <textarea
+    style={styles.textarea}
+    placeholder="Type your question here..."
+    value={question}
+    onChange={(e) => setQuestion(e.target.value)}
+    onFocus={(e) =>
+      Object.assign(e.target.style, styles.textareaFocus)
+    }
+    onBlur={(e) =>
+      Object.assign(e.target.style, styles.textarea)
+    }
+  />
+
+  <button style={styles.submitBtn} onClick={bb}>
+    Submit Question
+  </button>
+
+  {status && <p>{status}</p>}
+</div>
+
     </div>
   );
 }
@@ -180,6 +224,53 @@ const styles = {
     fontSize: 16,
     color: "#555",
   },
+  questionSection: {
+  marginTop: 30,
+  padding: 25,
+  borderRadius: 18,
+  background: "#f9fbff",
+  boxShadow: "0 8px 20px rgba(0,0,0,0.08)",
+},
+
+questionHeading: {
+  fontSize: "1.6rem",
+  marginBottom: 15,
+  color: "#2c3e50",
+  textAlign: "center",
+},
+
+textarea: {
+  width: "100%",
+  minHeight: 120,
+  padding: 14,
+  fontSize: 16,
+  borderRadius: 12,
+  border: "1.5px solid #ccc",
+  outline: "none",
+  resize: "none",
+  fontFamily: "Arial, sans-serif",
+  transition: "border-color 0.3s, box-shadow 0.3s",
+},
+
+textareaFocus: {
+  borderColor: "#4CAF50",
+  boxShadow: "0 0 0 2px rgba(76,175,80,0.2)",
+},
+
+submitBtn: {
+  marginTop: 15,
+  width: "100%",
+  padding: "12px 20px",
+  fontSize: 16,
+  borderRadius: 14,
+  border: "none",
+  background: "linear-gradient(135deg, #4CAF50, #66BB6A)",
+  color: "#fff",
+  cursor: "pointer",
+  fontWeight: "bold",
+  letterSpacing: 0.5,
+  transition: "transform 0.2s ease, box-shadow 0.2s ease",
+},
 };
 
 export default Main;

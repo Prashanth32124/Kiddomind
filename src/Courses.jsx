@@ -11,7 +11,6 @@ function Courses() {
   return (
     <div style={styles.page}>
 
-      {/* ROUND LOGO */}
       <div style={styles.logoWrap}>
         <img src={logo} alt="KiddoMind Logo" style={styles.logo} />
       </div>
