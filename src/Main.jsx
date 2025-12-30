@@ -105,21 +105,22 @@ function Main() {
   return (
     <div style={styles.page}>
       {/* SIDEBAR */}
-      <div style={styles.sidebar}>
-        <h4 style={styles.sideTitle}>🌍 {t.lang}</h4>
-        <button
-          style={lang === "en" ? styles.langActive : styles.langBtn}
-          onClick={() => setLang("en")}
-        >
-          EN
-        </button>
-        <button
-          style={lang === "id" ? styles.langActive : styles.langBtn}
-          onClick={() => setLang("id")}
-        >
-          ID
-        </button>
-      </div>
+      {/* TOP RIGHT LANGUAGE TOGGLE */}
+<div style={styles.langTop}>
+  <button
+    style={lang === "id" ? styles.langMiniActive : styles.langMini}
+    onClick={() => setLang("id")}
+  >
+    ID
+  </button>
+  <button
+    style={lang === "en" ? styles.langMiniActive : styles.langMini}
+    onClick={() => setLang("en")}
+  >
+    EN
+  </button>
+</div>
+
 
       {/* CONTENT */}
       <div style={styles.container}>
