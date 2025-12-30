@@ -9,7 +9,6 @@ const translations = {
     placeholder: "Enter your name",
     alert: "Please enter your name",
     button: "Enter Your World",
-    lang: "Language",
   },
   id: {
     welcome: "Selamat Datang di",
@@ -17,15 +16,13 @@ const translations = {
     placeholder: "Masukkan nama kamu",
     alert: "Silakan masukkan nama kamu",
     button: "Masuk ke Duniamu",
-    lang: "Bahasa",
   },
 };
 
 function Name() {
   const navigate = useNavigate();
-
   const [username, setUsername] = useState("");
-  const [lang, setLang] = useState("id"); // ✅ Default Indonesian
+  const [lang, setLang] = useState("id"); // default Indonesian
 
   const t = translations[lang];
 
@@ -39,9 +36,8 @@ function Name() {
 
   return (
     <div style={styles.page}>
-      {/* ===== Sidebar Language Toggle ===== */}
-      <div style={styles.sidebar}>
-        <h4 style={styles.sideTitle}>🌍</h4>
+      {/* ===== TOP BAR (NOT LEFT) ===== */}
+      <div style={styles.topBar}>
         <button
           style={lang === "id" ? styles.langActive : styles.langBtn}
           onClick={() => setLang("id")}
@@ -56,7 +52,7 @@ function Name() {
         </button>
       </div>
 
-      {/* ===== Card ===== */}
+      {/* ===== CARD ===== */}
       <div style={styles.card}>
         <h1 style={styles.title}>
           👋 {t.welcome}{" "}
@@ -81,83 +77,74 @@ function Name() {
   );
 }
 
-/* ========== STYLES ========== */
+/* ========== STYLES (FIXED) ========== */
 const styles = {
   page: {
     minHeight: "100vh",
+    background: "linear-gradient(135deg, #a8edea, #fed6e3)",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    background: "linear-gradient(135deg, #a8edea, #fed6e3)",
-    fontFamily: "'Comic Sans MS', 'Poppins', cursive",
-    paddingLeft: 80,
+    padding: 16,
+    fontFamily: "'Poppins', 'Nunito', Arial, sans-serif", // ✅ FIXED FONT
+    position: "relative",
   },
 
-  sidebar: {
-    position: "fixed",
-    left: 0,
-    top: 0,
-    width: 70,
-    height: "100vh",
-    background: "#ff9f43",
+  /* TOP BAR */
+  topBar: {
+    position: "absolute",
+    top: 12,
+    right: 12,
     display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    paddingTop: 20,
-    boxShadow: "4px 0 12px rgba(0,0,0,0.2)",
-  },
-
-  sideTitle: {
-    color: "#fff",
-    marginBottom: 10,
-    fontSize: 16,
+    gap: 6,
   },
 
   langBtn: {
-    background: "#fff",
-    border: "none",
-    borderRadius: 12,
-    padding: "6px 10px",
-    marginBottom: 10,
-    cursor: "pointer",
+    padding: "4px 8px",
     fontSize: 12,
+    borderRadius: 8,
+    border: "1px solid #ccc",
+    background: "#fff",
+    cursor: "pointer",
   },
 
   langActive: {
-    background: "#2ecc71",
-    color: "#fff",
-    border: "none",
-    borderRadius: 12,
-    padding: "6px 10px",
-    marginBottom: 10,
+    padding: "4px 8px",
     fontSize: 12,
-    fontWeight: "bold",
+    borderRadius: 8,
+    border: "none",
+    background: "#4CAF50",
+    color: "#fff",
+    fontWeight: 600,
+    cursor: "pointer",
   },
 
   card: {
     background: "#fff",
-    padding: 35,
-    borderRadius: 25,
-    width: 360,
+    padding: 32,
+    borderRadius: 24,
+    width: "100%",
+    maxWidth: 360,
     textAlign: "center",
     boxShadow: "0 15px 30px rgba(0,0,0,0.18)",
   },
 
   title: {
     marginBottom: 12,
-    fontSize: "1.9rem",
+    fontSize: "1.8rem",
+    fontWeight: 600,
   },
 
   subtitle: {
     marginBottom: 22,
     color: "#555",
-    fontSize: 16,
+    fontSize: 15,
   },
 
   input: {
     width: "100%",
     padding: 14,
-    fontSize: 16,
+    fontSize: 15,
     borderRadius: 14,
     border: "1.5px solid #ccc",
     outline: "none",
@@ -167,7 +154,7 @@ const styles = {
   button: {
     width: "100%",
     padding: 14,
-    fontSize: 17,
+    fontSize: 16,
     borderRadius: 16,
     border: "none",
     backgroundColor: "#4CAF50",

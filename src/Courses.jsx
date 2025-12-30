@@ -11,7 +11,6 @@ const translations = {
     title: "Welcome to",
     subtitle: "Learn • Play • Grow",
     start: "Start Course",
-    lang: "Language",
 
     c1Title: "Count & Choose",
     c1Text:
@@ -30,7 +29,6 @@ const translations = {
     title: "Selamat Datang di",
     subtitle: "Belajar • Bermain • Tumbuh",
     start: "Mulai",
-    lang: "Bahasa",
 
     c1Title: "Hitung & Pilih",
     c1Text:
@@ -48,164 +46,158 @@ const translations = {
 
 function Courses() {
   const navigate = useNavigate();
-  const [lang, setLang] = useState("id"); // ✅ Default Indonesian
+  const [lang, setLang] = useState("id"); // default Indonesian
   const t = translations[lang];
 
   return (
     <div style={styles.page}>
-      {/* ===== Sidebar Language Toggle ===== */}
-      <div style={styles.sidebar}>
-        <h4 style={styles.sideTitle}>🌍</h4>
-        <button
-          style={lang === "id" ? styles.langActive : styles.langBtn}
-          onClick={() => setLang("id")}
-        >
-          ID
-        </button>
-        <button
-          style={lang === "en" ? styles.langActive : styles.langBtn}
-          onClick={() => setLang("en")}
-        >
-          EN
-        </button>
-      </div>
-
-      {/* ===== Logo ===== */}
-      <div style={styles.logoWrap}>
-        <img src={logo} alt="KiddoMind Logo" style={styles.logo} />
-      </div>
-
-      {/* ===== Title ===== */}
-      <h1 style={styles.title}>
-        {t.title} <span style={{ color: "#ff6f61" }}>KIDDOMIND</span>
-      </h1>
-      <p style={styles.subtitle}>{t.subtitle}</p>
-
-      {/* ===== Courses ===== */}
       <div style={styles.container}>
-        {/* Course 1 */}
-        <div style={styles.card}>
-          <img src={img1} alt={t.c1Title} style={styles.image} />
-          <h2>{t.c1Title}</h2>
-          <p style={styles.text}>{t.c1Text}</p>
-          <button
-            onClick={() => navigate("/CountnChoose")}
-            style={styles.button}
-          >
-            {t.start}
-          </button>
+        {/* ===== HEADER (LOGO + LANGUAGE) ===== */}
+        <div style={styles.header}>
+          <img src={logo} alt="KiddoMind Logo" style={styles.logo} />
+
+          <div style={styles.langInline}>
+            <button
+              style={lang === "id" ? styles.langActive : styles.langBtn}
+              onClick={() => setLang("id")}
+            >
+              ID
+            </button>
+            <button
+              style={lang === "en" ? styles.langActive : styles.langBtn}
+              onClick={() => setLang("en")}
+            >
+              EN
+            </button>
+          </div>
         </div>
 
-        {/* Course 2 */}
-        <div style={styles.card}>
-          <img src={img2} alt={t.c2Title} style={styles.image} />
-          <h2>{t.c2Title}</h2>
-          <p style={styles.text}>{t.c2Text}</p>
-          <button
-            onClick={() => navigate("/FlashCard")}
-            style={styles.button}
-          >
-            {t.start}
-          </button>
-        </div>
+        {/* ===== TITLE ===== */}
+        <h1 style={styles.title}>
+          {t.title} <span style={{ color: "#ff6f61" }}>KIDDOMIND</span>
+        </h1>
+        <p style={styles.subtitle}>{t.subtitle}</p>
 
-        {/* Course 3 */}
-        <div style={styles.card}>
-          <img src={img3} alt={t.c3Title} style={styles.image} />
-          <h2>{t.c3Title}</h2>
-          <p style={styles.text}>{t.c3Text}</p>
-          <button
-            onClick={() => navigate("/NumberQuiz")}
-            style={styles.button}
-          >
-            {t.start}
-          </button>
+        {/* ===== COURSES ===== */}
+        <div style={styles.cards}>
+          {/* Course 1 */}
+          <div style={styles.card}>
+            <img src={img1} alt={t.c1Title} style={styles.image} />
+            <h2>{t.c1Title}</h2>
+            <p style={styles.text}>{t.c1Text}</p>
+            <button
+              onClick={() => navigate("/CountnChoose")}
+              style={styles.button}
+            >
+              {t.start}
+            </button>
+          </div>
+
+          {/* Course 2 */}
+          <div style={styles.card}>
+            <img src={img2} alt={t.c2Title} style={styles.image} />
+            <h2>{t.c2Title}</h2>
+            <p style={styles.text}>{t.c2Text}</p>
+            <button
+              onClick={() => navigate("/FlashCard")}
+              style={styles.button}
+            >
+              {t.start}
+            </button>
+          </div>
+
+          {/* Course 3 */}
+          <div style={styles.card}>
+            <img src={img3} alt={t.c3Title} style={styles.image} />
+            <h2>{t.c3Title}</h2>
+            <p style={styles.text}>{t.c3Text}</p>
+            <button
+              onClick={() => navigate("/NumberQuiz")}
+              style={styles.button}
+            >
+              {t.start}
+            </button>
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
-/* ========== STYLES ========== */
+/* ========== STYLES (FIXED) ========== */
 const styles = {
   page: {
     minHeight: "100vh",
-    padding: "30px 16px",
-    textAlign: "center",
     background: "linear-gradient(135deg, #a1c4fd, #c2e9fb)",
-    fontFamily: "'Comic Sans MS', 'Poppins', cursive",
-    paddingLeft: 80,
-  },
-
-  sidebar: {
-    position: "fixed",
-    left: 0,
-    top: 0,
-    width: 70,
-    height: "100vh",
-    background: "#ff9f43",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    paddingTop: 20,
-    boxShadow: "4px 0 12px rgba(0,0,0,0.2)",
-  },
-
-  sideTitle: {
-    color: "#fff",
-    marginBottom: 10,
-    fontSize: 16,
-  },
-
-  langBtn: {
-    background: "#fff",
-    border: "none",
-    borderRadius: 12,
-    padding: "6px 10px",
-    marginBottom: 10,
-    cursor: "pointer",
-    fontSize: 12,
-  },
-
-  langActive: {
-    background: "#2ecc71",
-    color: "#fff",
-    border: "none",
-    borderRadius: 12,
-    padding: "6px 10px",
-    marginBottom: 10,
-    fontSize: 12,
-    fontWeight: "bold",
-  },
-
-  logoWrap: {
     display: "flex",
     justifyContent: "center",
+    padding: 16,
+    fontFamily: "'Poppins', 'Nunito', Arial, sans-serif", // ✅ FIXED FONT
+  },
+
+  container: {
+    width: "100%",
+    maxWidth: 1000,
+    background: "#fff",
+    padding: 24,
+    borderRadius: 24,
+    textAlign: "center",
+  },
+
+  header: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginBottom: 12,
   },
 
   logo: {
-    width: 110,
-    height: 110,
+    width: 90,
+    height: 90,
     borderRadius: "50%",
-    objectFit: "cover",
     border: "4px solid #fff",
     boxShadow: "0 6px 15px rgba(0,0,0,0.25)",
     backgroundColor: "#fff",
   },
 
+  langInline: {
+    display: "flex",
+    gap: 6,
+  },
+
+  langBtn: {
+    padding: "4px 8px",
+    fontSize: 12,
+    borderRadius: 8,
+    border: "1px solid #ccc",
+    background: "#fff",
+    cursor: "pointer",
+  },
+
+  langActive: {
+    padding: "4px 8px",
+    fontSize: 12,
+    borderRadius: 8,
+    background: "#4CAF50",
+    color: "#fff",
+    border: "none",
+    fontWeight: 600,
+    cursor: "pointer",
+  },
+
   title: {
-    fontSize: "2.2rem",
-    marginBottom: 5,
+    fontSize: "2rem",
+    marginBottom: 6,
+    fontWeight: 600,
   },
 
   subtitle: {
-    fontSize: "1.1rem",
-    marginBottom: 30,
+    fontSize: "1rem",
+    marginBottom: 24,
     color: "#444",
   },
 
-  container: {
+  cards: {
     display: "flex",
     justifyContent: "center",
     gap: 24,
@@ -238,7 +230,7 @@ const styles = {
     marginTop: 18,
     width: "100%",
     padding: "12px",
-    fontSize: "16px",
+    fontSize: 16,
     borderRadius: 14,
     border: "none",
     background: "linear-gradient(135deg, #ff6f61, #ff9472)",
