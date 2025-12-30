@@ -45,7 +45,8 @@ function generateQuestions(total = 100, lang = "id") {
 }
 
 function CountnChoose() {
-  const [lang, setLang] = useState("id"); // ✅ Default Indonesian
+  const [lang, setLang] = useState("id"); // default Indonesian
+
   const [questions] = useState(() =>
     generateQuestions(100, "id")
       .sort(() => Math.random() - 0.5)
@@ -111,9 +112,8 @@ function CountnChoose() {
 
   return (
     <div style={styles.page}>
-      {/* ===== Sidebar Language Toggle ===== */}
-      <div style={styles.sidebar}>
-        <h4 style={styles.sideTitle}>🌍</h4>
+      {/* ===== TOP LANGUAGE BAR ===== */}
+      <div style={styles.topBar}>
         <button
           style={lang === "id" ? styles.langActive : styles.langBtn}
           onClick={() => setLang("id")}
@@ -162,11 +162,7 @@ function CountnChoose() {
         </div>
 
         {feedback && (
-          <h3
-            style={{
-              color: feedback.includes("✅") ? "green" : "red",
-            }}
-          >
+          <h3 style={{ color: feedback.includes("✅") ? "green" : "red" }}>
             {feedback}
           </h3>
         )}
@@ -188,7 +184,7 @@ function CountnChoose() {
   );
 }
 
-/* ================== STYLES ================== */
+/* ================== STYLES (FIXED) ================== */
 const styles = {
   page: {
     minHeight: "100vh",
@@ -197,47 +193,37 @@ const styles = {
     alignItems: "center",
     padding: 16,
     background: "linear-gradient(135deg, #fbc2eb, #a6c1ee)",
-    fontFamily: "'Comic Sans MS', 'Poppins', cursive",
-    paddingLeft: 80,
+    fontFamily: "'Poppins', 'Nunito', Arial, sans-serif", // ✅ FIXED FONT
+    position: "relative",
   },
 
-  sidebar: {
-    position: "fixed",
-    left: 0,
-    top: 0,
-    width: 70,
-    height: "100vh",
-    background: "#ff9f43",
+  /* TOP BAR */
+  topBar: {
+    position: "absolute",
+    top: 12,
+    right: 12,
     display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    paddingTop: 20,
-    boxShadow: "4px 0 12px rgba(0,0,0,0.2)",
-  },
-
-  sideTitle: {
-    color: "#fff",
-    marginBottom: 10,
-    fontSize: 16,
+    gap: 6,
   },
 
   langBtn: {
-    background: "#fff",
-    border: "none",
-    borderRadius: 12,
-    padding: "6px 10px",
-    marginBottom: 10,
-    cursor: "pointer",
+    padding: "4px 8px",
     fontSize: 12,
+    borderRadius: 8,
+    border: "1px solid #ccc",
+    background: "#fff",
+    cursor: "pointer",
   },
 
   langActive: {
-    background: "#2ecc71",
+    padding: "4px 8px",
+    fontSize: 12,
+    borderRadius: 8,
+    background: "#4CAF50",
     color: "#fff",
-    borderRadius: 12,
-    padding: "6px 10px",
-    marginBottom: 10,
-    fontWeight: "bold",
+    border: "none",
+    fontWeight: 600,
+    cursor: "pointer",
   },
 
   card: {

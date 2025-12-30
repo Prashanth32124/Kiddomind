@@ -29,7 +29,7 @@ const texts = {
 };
 
 function NumberQuiz() {
-  const [lang, setLang] = useState("id"); // ✅ default Indonesian
+  const [lang, setLang] = useState("id"); // default Indonesian
   const t = texts[lang];
 
   const [level, setLevel] = useState(null);
@@ -93,58 +93,18 @@ function NumberQuiz() {
     setQuestion(generateQuestion(level));
   }
 
-  /* ===== LEVEL SCREEN ===== */
-  if (!level) {
-    return (
-      <div style={styles.page}>
-        {/* Sidebar */}
-        <div style={styles.sidebar}>
-          <h4 style={styles.sideTitle}>🌍</h4>
-          <button
-            style={lang === "id" ? styles.langActive : styles.langBtn}
-            onClick={() => setLang("id")}
-          >
-            ID
-          </button>
-          <button
-            style={lang === "en" ? styles.langActive : styles.langBtn}
-            onClick={() => setLang("en")}
-          >
-            EN
-          </button>
-        </div>
-
-        <div style={styles.card}>
-          <h1 style={styles.title}>{t.title}</h1>
-          <p style={styles.sub}>{t.choose}</p>
-
-          <button style={styles.levelBtn} onClick={() => startQuiz("easy")}>
-            {t.easy}
-          </button>
-
-          <button style={styles.levelBtn} onClick={() => startQuiz("medium")}>
-            {t.medium}
-          </button>
-
-          <button style={styles.levelBtn} onClick={() => startQuiz("hard")}>
-            {t.hard}
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  const options = [
-    question.answer,
-    question.answer + 1,
-    Math.max(question.answer - 1, 0),
-  ].sort(() => Math.random() - 0.5);
+  const options = question
+    ? [
+        question.answer,
+        question.answer + 1,
+        Math.max(question.answer - 1, 0),
+      ].sort(() => Math.random() - 0.5)
+    : [];
 
   return (
     <div style={styles.page}>
-      {/* Sidebar */}
-      <div style={styles.sidebar}>
-        <h4 style={styles.sideTitle}>🌍</h4>
+      {/* ===== TOP LANGUAGE TOGGLE ===== */}
+      <div style={styles.topBar}>
         <button
           style={lang === "id" ? styles.langActive : styles.langBtn}
           onClick={() => setLang("id")}
@@ -160,52 +120,71 @@ function NumberQuiz() {
       </div>
 
       <div style={styles.card}>
-        <h3 style={styles.score}>⭐ {t.score}: {score}</h3>
+        {!level ? (
+          <>
+            <h1 style={styles.title}>{t.title}</h1>
+            <p style={styles.sub}>{t.choose}</p>
 
-        <div style={styles.questionBox}>
-          <h2>{question.qText} = ?</h2>
-        </div>
-
-        <div style={styles.options}>
-          {options.map((opt, i) => (
-            <button
-              key={i}
-              style={{
-                ...styles.optionBtn,
-                backgroundColor: answered ? "#ddd" : "#ffb703",
-              }}
-              onClick={() => checkAnswer(opt)}
-              disabled={answered}
-            >
-              {opt}
+            <button style={styles.levelBtn} onClick={() => startQuiz("easy")}>
+              {t.easy}
             </button>
-          ))}
-        </div>
+            <button style={styles.levelBtn} onClick={() => startQuiz("medium")}>
+              {t.medium}
+            </button>
+            <button style={styles.levelBtn} onClick={() => startQuiz("hard")}>
+              {t.hard}
+            </button>
+          </>
+        ) : (
+          <>
+            <h3 style={styles.score}>⭐ {t.score}: {score}</h3>
 
-        <p
-          style={{
-            fontSize: 18,
-            color: message.includes("✅") ? "green" : "red",
-          }}
-        >
-          {message}
-        </p>
+            <div style={styles.questionBox}>
+              <h2>{question.qText} = ?</h2>
+            </div>
 
-        {answered && (
-          <button style={styles.nextBtn} onClick={nextQuestion}>
-            {t.next}
-          </button>
+            <div style={styles.options}>
+              {options.map((opt, i) => (
+                <button
+                  key={i}
+                  style={{
+                    ...styles.optionBtn,
+                    backgroundColor: answered ? "#ddd" : "#ffb703",
+                  }}
+                  onClick={() => checkAnswer(opt)}
+                  disabled={answered}
+                >
+                  {opt}
+                </button>
+              ))}
+            </div>
+
+            <p
+              style={{
+                fontSize: 17,
+                color: message.includes("✅") ? "green" : "red",
+              }}
+            >
+              {message}
+            </p>
+
+            {answered && (
+              <button style={styles.nextBtn} onClick={nextQuestion}>
+                {t.next}
+              </button>
+            )}
+
+            <button style={styles.backBtn} onClick={() => setLevel(null)}>
+              {t.change}
+            </button>
+          </>
         )}
-
-        <button style={styles.backBtn} onClick={() => setLevel(null)}>
-          {t.change}
-        </button>
       </div>
     </div>
   );
 }
 
-/* ========== STYLES ========== */
+/* ========== STYLES (CLEAN & MOBILE SAFE) ========== */
 const styles = {
   page: {
     minHeight: "100vh",
@@ -214,47 +193,36 @@ const styles = {
     alignItems: "center",
     padding: 16,
     background: "linear-gradient(135deg, #89f7fe, #66a6ff)",
-    fontFamily: "'Comic Sans MS', 'Poppins', cursive",
-    paddingLeft: 80,
+    fontFamily: "'Poppins', 'Nunito', Arial, sans-serif",
+    position: "relative",
   },
 
-  sidebar: {
-    position: "fixed",
-    left: 0,
-    top: 0,
-    width: 70,
-    height: "100vh",
-    background: "#ff9f43",
+  topBar: {
+    position: "absolute",
+    top: 12,
+    right: 12,
     display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    paddingTop: 20,
-    boxShadow: "4px 0 12px rgba(0,0,0,0.2)",
-  },
-
-  sideTitle: {
-    color: "#fff",
-    marginBottom: 10,
-    fontSize: 16,
+    gap: 6,
   },
 
   langBtn: {
-    background: "#fff",
-    border: "none",
-    borderRadius: 12,
-    padding: "6px 10px",
-    marginBottom: 10,
-    cursor: "pointer",
+    padding: "4px 8px",
     fontSize: 12,
+    borderRadius: 8,
+    border: "1px solid #ccc",
+    background: "#fff",
+    cursor: "pointer",
   },
 
   langActive: {
-    background: "#2ecc71",
+    padding: "4px 8px",
+    fontSize: 12,
+    borderRadius: 8,
+    background: "#4CAF50",
     color: "#fff",
-    borderRadius: 12,
-    padding: "6px 10px",
-    marginBottom: 10,
-    fontWeight: "bold",
+    border: "none",
+    fontWeight: 600,
+    cursor: "pointer",
   },
 
   card: {
@@ -269,7 +237,7 @@ const styles = {
 
   title: {
     color: "#6a0572",
-    marginBottom: 5,
+    marginBottom: 8,
   },
 
   sub: {
@@ -296,19 +264,19 @@ const styles = {
   },
 
   optionBtn: {
-    fontSize: 20,
-    padding: "12px 24px",
+    fontSize: 18,
+    padding: "12px 22px",
     borderRadius: 15,
     border: "none",
     cursor: "pointer",
-    minWidth: 80,
+    minWidth: 70,
   },
 
   levelBtn: {
     width: "100%",
     padding: 14,
     marginBottom: 12,
-    fontSize: 18,
+    fontSize: 17,
     borderRadius: 16,
     border: "none",
     backgroundColor: "#4CAF50",
