@@ -3,26 +3,27 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import logo from "./images/logo.png";
 
-
+/* ================= TRANSLATIONS ================= */
 const translations = {
   en: {
     title: "Welcome to KiddoMind",
+    subtitle: "Learn • Play • Grow",
 
-    p1: `KiddoMind is an interactive learning platform created especially for children to help them understand basic concepts in a simple and enjoyable way. The project focuses on early learning skills such as counting, number understanding, memory development, and object recognition.`,
+    p1: "KiddoMind is an interactive learning platform created especially for children to help them understand basic concepts in a simple and enjoyable way. The project focuses on early learning skills such as counting, number understanding, memory development, and object recognition.",
 
-    p2: `Many children find traditional learning methods stressful or boring. KiddoMind addresses this challenge by using interactive activities and game-based learning techniques that make education engaging and meaningful.`,
+    p2: "Many children find traditional learning methods stressful or boring. KiddoMind addresses this challenge by using interactive activities and game-based learning techniques that make education engaging and meaningful.",
 
     whyUsefulTitle: "Why This Project Is Useful for Children",
 
-    p3: `This project helps children improve logical thinking, memory, and problem-solving skills. Instant feedback allows children to understand their mistakes without fear, encouraging continuous learning.`,
+    p3: "This project helps children improve logical thinking, memory, and problem-solving skills. Instant feedback allows children to understand their mistakes without fear, encouraging continuous learning.",
 
-    p4: `KiddoMind supports self-paced learning and builds confidence by allowing children to learn through exploration rather than pressure.`,
+    p4: "KiddoMind supports self-paced learning and builds confidence by allowing children to learn through exploration rather than pressure.",
 
     whyProvideTitle: "Why We Provide This Product to Children",
 
-    p5: `The purpose of KiddoMind is to support early education through technology in a positive and responsible way. The platform provides a safe digital environment where children can practice skills and build a strong learning foundation.`,
+    p5: "The purpose of KiddoMind is to support early education through technology in a positive and responsible way. The platform provides a safe digital environment where children can practice skills and build a strong learning foundation.",
 
-    p6: `By offering this product to children, we aim to replace learning anxiety with curiosity and motivation.`,
+    p6: "By offering this product to children, we aim to replace learning anxiety with curiosity and motivation.",
 
     creatorTitle: "Person Behind This Project",
     creatorName: "Najma",
@@ -37,27 +38,27 @@ const translations = {
     placeholder: "Type your question here...",
     submit: "Send",
     courses: "Go to Courses",
-    lang: "Language",
   },
 
   id: {
     title: "Selamat Datang di KiddoMind",
+    subtitle: "Belajar • Bermain • Tumbuh",
 
-    p1: `KiddoMind adalah platform pembelajaran interaktif yang dibuat khusus untuk anak-anak agar mereka dapat memahami konsep dasar dengan cara yang sederhana dan menyenangkan. Proyek ini berfokus pada keterampilan belajar awal seperti berhitung, pemahaman angka, pengembangan memori, dan pengenalan objek.`,
+    p1: "KiddoMind adalah platform pembelajaran interaktif yang dibuat khusus untuk anak-anak agar mereka dapat memahami konsep dasar dengan cara yang sederhana dan menyenangkan. Proyek ini berfokus pada keterampilan belajar awal seperti berhitung, pemahaman angka, pengembangan memori, dan pengenalan objek.",
 
-    p2: `Banyak anak merasa metode pembelajaran tradisional membosankan atau membuat stres. KiddoMind mengatasi tantangan ini dengan menggunakan aktivitas interaktif dan pembelajaran berbasis permainan agar belajar menjadi lebih menarik dan bermakna.`,
+    p2: "Banyak anak merasa metode pembelajaran tradisional membosankan atau membuat stres. KiddoMind mengatasi tantangan ini dengan menggunakan aktivitas interaktif dan pembelajaran berbasis permainan agar belajar menjadi lebih menarik dan bermakna.",
 
     whyUsefulTitle: "Mengapa Proyek Ini Bermanfaat untuk Anak-anak",
 
-    p3: `Proyek ini membantu anak meningkatkan kemampuan berpikir logis, daya ingat, dan pemecahan masalah. Umpan balik instan membantu anak memahami kesalahan mereka tanpa rasa takut.`,
+    p3: "Proyek ini membantu anak meningkatkan kemampuan berpikir logis, daya ingat, dan pemecahan masalah. Umpan balik instan membantu anak memahami kesalahan mereka tanpa rasa takut.",
 
-    p4: `KiddoMind mendukung pembelajaran mandiri dan membangun kepercayaan diri dengan memungkinkan anak belajar melalui eksplorasi tanpa tekanan.`,
+    p4: "KiddoMind mendukung pembelajaran mandiri dan membangun kepercayaan diri dengan memungkinkan anak belajar melalui eksplorasi tanpa tekanan.",
 
     whyProvideTitle: "Mengapa Kami Menyediakan Produk Ini untuk Anak-anak",
 
-    p5: `Tujuan KiddoMind adalah mendukung pendidikan awal melalui teknologi dengan cara yang positif dan bertanggung jawab. Platform ini menyediakan lingkungan digital yang aman bagi anak-anak.`,
+    p5: "Tujuan KiddoMind adalah mendukung pendidikan awal melalui teknologi dengan cara yang positif dan bertanggung jawab. Platform ini menyediakan lingkungan digital yang aman bagi anak-anak.",
 
-    p6: `Dengan menyediakan produk ini, kami bertujuan menggantikan kecemasan belajar dengan rasa ingin tahu dan motivasi.`,
+    p6: "Dengan menyediakan produk ini, kami bertujuan menggantikan kecemasan belajar dengan rasa ingin tahu dan motivasi.",
 
     creatorTitle: "Pembuat Proyek",
     creatorName: "Najma",
@@ -72,20 +73,19 @@ const translations = {
     placeholder: "Tulis pertanyaan kamu di sini...",
     submit: "Kirim",
     courses: "Ke Kursus",
-    lang: "Bahasa",
   },
 };
 
 function Main() {
   const navigate = useNavigate();
+  const [lang, setLang] = useState("id");
   const [question, setQuestion] = useState("");
   const [status, setStatus] = useState("");
-  const [lang, setLang] = useState("id");
 
   const t = translations[lang];
 
   const submitQuestion = async () => {
-    if (question.trim() === "") {
+    if (!question.trim()) {
       setStatus("Please write a question before submitting.");
       return;
     }
@@ -104,40 +104,33 @@ function Main() {
 
   return (
     <div style={styles.page}>
-      {/* SIDEBAR */}
-      {/* TOP RIGHT LANGUAGE TOGGLE */}
-<div style={styles.langTop}>
-  <button
-    style={lang === "id" ? styles.langMiniActive : styles.langMini}
-    onClick={() => setLang("id")}
-  >
-    ID
-  </button>
-  <button
-    style={lang === "en" ? styles.langMiniActive : styles.langMini}
-    onClick={() => setLang("en")}
-  >
-    EN
-  </button>
-</div>
-
-
-      {/* CONTENT */}
       <div style={styles.container}>
-        <div style={styles.topBar}>
-          <button
-            style={styles.courseBtn}
-            onClick={() => navigate("/Name")}
-          >
-            {t.courses}
-          </button>
-        </div>
-
-        <div style={styles.logoWrap}>
+        {/* HEADER */}
+        <div style={styles.header}>
           <img src={logo} alt="KiddoMind Logo" style={styles.logo} />
+
+          <div style={styles.langInline}>
+            <button
+              style={lang === "id" ? styles.langActive : styles.langBtn}
+              onClick={() => setLang("id")}
+            >
+              ID
+            </button>
+            <button
+              style={lang === "en" ? styles.langActive : styles.langBtn}
+              onClick={() => setLang("en")}
+            >
+              EN
+            </button>
+          </div>
         </div>
 
         <h1 style={styles.title}>{t.title}</h1>
+        <p style={styles.subtitle}>{t.subtitle}</p>
+
+        <button style={styles.courseBtn} onClick={() => navigate("/Name")}>
+          {t.courses}
+        </button>
 
         <p style={styles.text}>{t.p1}</p>
         <p style={styles.text}>{t.p2}</p>
@@ -178,104 +171,147 @@ function Main() {
   );
 }
 
-/* ================== STYLES ================== */
+/* ================= STYLES ================= */
 const styles = {
   page: {
     minHeight: "100vh",
     background: "linear-gradient(135deg, #ffecd2, #fcb69f)",
     display: "flex",
-    fontFamily: "'Comic Sans MS', 'Poppins', cursive",
-    paddingLeft: 90,
+    justifyContent: "center",
+    padding: 16,
+    fontFamily: "'Poppins', 'Nunito', Arial, sans-serif",
   },
-  sidebar: {
-    position: "fixed",
-    left: 0,
-    top: 0,
-    width: 80,
-    height: "100vh",
-    background: "#ff9f43",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    paddingTop: 20,
-  },
-  sideTitle: { color: "#fff", fontSize: 14, marginBottom: 12 },
-  langBtn: {
-    background: "#fff",
-    border: "none",
-    borderRadius: 14,
-    padding: "6px 10px",
-    marginBottom: 10,
-    cursor: "pointer",
-  },
-  langActive: {
-    background: "#2ecc71",
-    color: "#fff",
-    borderRadius: 14,
-    padding: "6px 10px",
-    marginBottom: 10,
-    fontWeight: "bold",
-  },
+
   container: {
     maxWidth: 900,
+    width: "100%",
     background: "#fff",
-    padding: 40,
-    borderRadius: 30,
-    margin: "30px auto",
+    padding: 30,
+    borderRadius: 24,
   },
-  topBar: { display: "flex", justifyContent: "flex-end" },
+
+  header: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+
+  logo: {
+    width: 80,
+  },
+
+  langInline: {
+    display: "flex",
+    gap: 6,
+  },
+
+  langBtn: {
+    padding: "4px 8px",
+    fontSize: 12,
+    borderRadius: 8,
+    border: "1px solid #ccc",
+    background: "#fff",
+    cursor: "pointer",
+  },
+
+  langActive: {
+    padding: "4px 8px",
+    fontSize: 12,
+    borderRadius: 8,
+    background: "#4CAF50",
+    color: "#fff",
+    border: "none",
+    fontWeight: 600,
+  },
+
+  title: {
+    textAlign: "center",
+    fontSize: "2rem",
+    color: "#ff6f61",
+    fontWeight: 600,
+  },
+
+  subtitle: {
+    textAlign: "center",
+    color: "#555",
+    marginBottom: 16,
+  },
+
   courseBtn: {
+    display: "block",
+    margin: "0 auto 20px",
     background: "#6c5ce7",
     color: "#fff",
     border: "none",
-    borderRadius: 18,
+    borderRadius: 16,
     padding: "10px 20px",
     cursor: "pointer",
   },
-  logoWrap: { display: "flex", justifyContent: "center", margin: 20 },
-  logo: { width: 120 },
-  title: { textAlign: "center", fontSize: "2.6rem", color: "#ff6f61" },
-  subTitle: { fontSize: "1.6rem", color: "#6c5ce7", marginTop: 30 },
-  text: { fontSize: 17, lineHeight: 1.8, color: "#444" },
+
+  subTitle: {
+    fontSize: "1.4rem",
+    color: "#6c5ce7",
+    marginTop: 30,
+  },
+
+  text: {
+    fontSize: 16,
+    lineHeight: 1.7,
+    color: "#444",
+  },
+
   creatorBox: {
     background: "#f1f9ff",
-    padding: 20,
-    borderRadius: 20,
+    padding: 18,
+    borderRadius: 18,
     textAlign: "center",
   },
-  creatorName: { color: "#00b894", fontSize: "1.8rem" },
+
+  creatorName: {
+    color: "#00b894",
+    fontSize: "1.5rem",
+  },
+
   questionBox: {
     marginTop: 40,
     background: "#ffeaa7",
-    padding: 25,
-    borderRadius: 25,
+    padding: 22,
+    borderRadius: 22,
   },
+
   questionTitle: {
     textAlign: "center",
-    fontSize: "1.6rem",
+    fontSize: "1.4rem",
     color: "#d35400",
   },
+
   textarea: {
     width: "100%",
-    minHeight: 120,
-    borderRadius: 20,
-    padding: 15,
-    fontSize: 16,
+    minHeight: 110,
+    borderRadius: 18,
+    padding: 14,
+    fontSize: 15,
     border: "2px solid #f39c12",
     resize: "none",
   },
+
   submitBtn: {
-    marginTop: 15,
+    marginTop: 12,
     width: "100%",
-    padding: 14,
-    borderRadius: 20,
+    padding: 12,
+    borderRadius: 18,
     border: "none",
     background: "#ff7675",
     color: "#fff",
-    fontSize: 18,
+    fontSize: 16,
     cursor: "pointer",
   },
-  status: { textAlign: "center", marginTop: 10 },
+
+  status: {
+    textAlign: "center",
+    marginTop: 8,
+  },
 };
 
 export default Main;
