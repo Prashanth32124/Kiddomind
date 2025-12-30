@@ -12,21 +12,51 @@ import monkey from "./animals/monkey.png";
 import rabbit from "./animals/rabbit.png";
 import bear from "./animals/bear.png";
 
-function FlashCard() {
-  const animals = [
-    { name: "Lion", img: lion },
-    { name: "Elephant", img: elephant },
-    { name: "Dog", img: dog },
-    { name: "Cat", img: cat },
-    { name: "Tiger", img: tiger },
-    { name: "Cow", img: cow },
-    { name: "Horse", img: horse },
-    { name: "Monkey", img: monkey },
-    { name: "Rabbit", img: rabbit },
-    { name: "Bear", img: bear },
-  ];
+/* ========== ANIMALS (BILINGUAL) ========== */
+const animals = [
+  { en: "Lion", id: "Singa", img: lion },
+  { en: "Elephant", id: "Gajah", img: elephant },
+  { en: "Dog", id: "Anjing", img: dog },
+  { en: "Cat", id: "Kucing", img: cat },
+  { en: "Tiger", id: "Harimau", img: tiger },
+  { en: "Cow", id: "Sapi", img: cow },
+  { en: "Horse", id: "Kuda", img: horse },
+  { en: "Monkey", id: "Monyet", img: monkey },
+  { en: "Rabbit", id: "Kelinci", img: rabbit },
+  { en: "Bear", id: "Beruang", img: bear },
+];
 
+/* ========== TEXTS ========== */
+const texts = {
+  en: {
+    title: "🐾 Animal Flash Cards",
+    score: "Score",
+    question: "What is this animal?",
+    placeholder: "Type name",
+    submit: "Submit",
+    correct: "✅ Correct!",
+    wrong: "❌ Try again!",
+    next: "Next ▶",
+    time: "Time left",
+  },
+  id: {
+    title: "🐾 Kartu Flash Hewan",
+    score: "Skor",
+    question: "Hewan apakah ini?",
+    placeholder: "Ketik nama",
+    submit: "Kirim",
+    correct: "✅ Benar!",
+    wrong: "❌ Coba lagi!",
+    next: "Lanjut ▶",
+    time: "Sisa waktu",
+  },
+};
+
+function FlashCard() {
   const TOTAL_TIME = 8;
+
+  const [lang, setLang] = useState("id"); // ✅ default Indonesian
+  const t = texts[lang];
 
   const [index, setIndex] = useState(0);
   const [showFront, setShowFront] = useState(true);
@@ -56,14 +86,14 @@ function FlashCard() {
   }, [index]);
 
   function checkAnswer() {
-    if (
-      input.trim().toLowerCase() ===
-      animals[index].name.toLowerCase()
-    ) {
+    const correctName =
+      lang === "id" ? animals[index].id : animals[index].en;
+
+    if (input.trim().toLowerCase() === correctName.toLowerCase()) {
       setScore((prev) => prev + 10);
-      setMsg("✅ Correct!");
+      setMsg(t.correct);
     } else {
-      setMsg("❌ Try again!");
+      setMsg(t.wrong);
     }
   }
 
@@ -75,9 +105,26 @@ function FlashCard() {
 
   return (
     <div style={styles.page}>
+      {/* ===== Sidebar Language Toggle ===== */}
+      <div style={styles.sidebar}>
+        <h4 style={styles.sideTitle}>🌍</h4>
+        <button
+          style={lang === "id" ? styles.langActive : styles.langBtn}
+          onClick={() => setLang("id")}
+        >
+          ID
+        </button>
+        <button
+          style={lang === "en" ? styles.langActive : styles.langBtn}
+          onClick={() => setLang("en")}
+        >
+          EN
+        </button>
+      </div>
+
       <div style={styles.cardBox}>
-        <h2 style={styles.title}>🐾 Animal Flash Cards</h2>
-        <h3 style={styles.score}>⭐ Score: {score}</h3>
+        <h2 style={styles.title}>{t.title}</h2>
+        <h3 style={styles.score}>⭐ {t.score}: {score}</h3>
 
         {/* CARD */}
         <div style={styles.card}>
@@ -89,22 +136,22 @@ function FlashCard() {
             />
           ) : (
             <div>
-              <h3>What is this animal?</h3>
+              <h3>{t.question}</h3>
               <input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Type name"
+                placeholder={t.placeholder}
                 style={styles.input}
               />
               <br />
               <button onClick={checkAnswer} style={styles.submitBtn}>
-                Submit
+                {t.submit}
               </button>
             </div>
           )}
         </div>
 
-        {/* TIMELINE */}
+        {/* TIMER */}
         {showFront && (
           <div style={styles.timelineWrap}>
             <div style={styles.timelineBg}>
@@ -118,7 +165,7 @@ function FlashCard() {
               />
             </div>
             <p style={styles.timerText}>
-              ⏳ Time left: {timeLeft}s
+              ⏳ {t.time}: {timeLeft}s
             </p>
           </div>
         )}
@@ -127,7 +174,7 @@ function FlashCard() {
 
         {!showFront && (
           <button onClick={nextCard} style={styles.nextBtn}>
-            Next ▶
+            {t.next}
           </button>
         )}
       </div>
@@ -135,6 +182,7 @@ function FlashCard() {
   );
 }
 
+/* ========== STYLES ========== */
 const styles = {
   page: {
     minHeight: "100vh",
@@ -142,10 +190,50 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
     padding: 16,
-    background:
-      "linear-gradient(135deg, #fbc2eb, #a6c1ee)",
-    fontFamily: "'Comic Sans MS', Arial, sans-serif",
+    background: "linear-gradient(135deg, #fbc2eb, #a6c1ee)",
+    fontFamily: "'Comic Sans MS', 'Poppins', cursive",
+    paddingLeft: 80,
   },
+
+  sidebar: {
+    position: "fixed",
+    left: 0,
+    top: 0,
+    width: 70,
+    height: "100vh",
+    background: "#ff9f43",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    paddingTop: 20,
+    boxShadow: "4px 0 12px rgba(0,0,0,0.2)",
+  },
+
+  sideTitle: {
+    color: "#fff",
+    marginBottom: 10,
+    fontSize: 16,
+  },
+
+  langBtn: {
+    background: "#fff",
+    border: "none",
+    borderRadius: 12,
+    padding: "6px 10px",
+    marginBottom: 10,
+    cursor: "pointer",
+    fontSize: 12,
+  },
+
+  langActive: {
+    background: "#2ecc71",
+    color: "#fff",
+    borderRadius: 12,
+    padding: "6px 10px",
+    marginBottom: 10,
+    fontWeight: "bold",
+  },
+
   cardBox: {
     background: "#fff",
     padding: 24,
@@ -155,14 +243,17 @@ const styles = {
     textAlign: "center",
     boxShadow: "0 12px 30px rgba(0,0,0,0.2)",
   },
+
   title: {
     marginBottom: 5,
     color: "#6a0572",
   },
+
   score: {
     marginBottom: 15,
     color: "#444",
   },
+
   card: {
     width: 260,
     height: 260,
@@ -174,11 +265,13 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
   },
+
   image: {
     width: "85%",
     height: "85%",
     objectFit: "contain",
   },
+
   input: {
     padding: 10,
     fontSize: 16,
@@ -187,6 +280,7 @@ const styles = {
     outline: "none",
     width: 180,
   },
+
   submitBtn: {
     marginTop: 12,
     padding: "8px 20px",
@@ -197,28 +291,34 @@ const styles = {
     fontSize: 16,
     cursor: "pointer",
   },
+
   timelineWrap: {
     marginTop: 10,
   },
+
   timelineBg: {
     height: 18,
     background: "#e0e0e0",
     borderRadius: 10,
     overflow: "hidden",
   },
+
   timelineFill: {
     height: "100%",
     transition: "width 1s linear",
   },
+
   timerText: {
     marginTop: 6,
     fontSize: 14,
     color: "#333",
   },
+
   feedback: {
     fontSize: 18,
     marginTop: 10,
   },
+
   nextBtn: {
     marginTop: 15,
     padding: "10px 26px",

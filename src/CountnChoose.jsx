@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 
+/* ================== OBJECT NAMES (BILINGUAL) ================== */
 const OBJECT_NAMES = {
-  "🍎": "apples",
-  "🍊": "oranges",
-  "🍍": "pineapples",
-  "🐦": "birds",
-  "🪑": "chairs",
+  "🍎": { en: "apples", id: "apel" },
+  "🍊": { en: "oranges", id: "jeruk" },
+  "🍍": { en: "pineapples", id: "nanas" },
+  "🐦": { en: "birds", id: "burung" },
+  "🪑": { en: "chairs", id: "kursi" },
 };
 
 const OBJECTS = Object.keys(OBJECT_NAMES);
 
-function generateQuestions(total = 100) {
+/* ================== QUESTION GENERATOR ================== */
+function generateQuestions(total = 100, lang = "id") {
   const questions = [];
 
   for (let i = 0; i < total; i++) {
@@ -25,32 +27,38 @@ function generateQuestions(total = 100) {
 
     const ask = objects[Math.floor(Math.random() * objects.length)];
 
+    const questionText =
+      lang === "id"
+        ? `Ada berapa ${OBJECT_NAMES[ask].id}?`
+        : `How many ${OBJECT_NAMES[ask].en}?`;
+
     questions.push({
       id: i + 1,
       objects,
       ask,
-      questionText: `How many ${OBJECT_NAMES[ask]}?`,
+      questionText,
+      answer: objects.filter((o) => o === ask).length,
     });
   }
 
   return questions;
 }
 
-const questions = generateQuestions(100)
-  .sort(() => Math.random() - 0.5)
-  .slice(0, 15);
-
 function CountnChoose() {
+  const [lang, setLang] = useState("id"); // ✅ Default Indonesian
+  const [questions] = useState(() =>
+    generateQuestions(100, "id")
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 15)
+  );
+
   const [current, setCurrent] = useState(0);
   const [score, setScore] = useState(0);
   const [feedback, setFeedback] = useState("");
   const [answered, setAnswered] = useState(false);
 
   const currentQ = questions[current];
-
-  const correctCount = currentQ.objects.filter(
-    (obj) => obj === currentQ.ask
-  ).length;
+  const correctCount = currentQ.answer;
 
   const options = [
     correctCount,
@@ -58,14 +66,37 @@ function CountnChoose() {
     Math.max(correctCount - 1, 0),
   ].sort(() => Math.random() - 0.5);
 
+  const texts = {
+    en: {
+      score: "Score",
+      question: "Question",
+      correct: "✅ Correct!",
+      wrong: "❌ Try again!",
+      next: "Next ▶",
+      finish: "🎉 Game Finished!",
+      final: "Final Score",
+    },
+    id: {
+      score: "Skor",
+      question: "Soal",
+      correct: "✅ Benar!",
+      wrong: "❌ Coba lagi!",
+      next: "Lanjut ▶",
+      finish: "🎉 Permainan Selesai!",
+      final: "Skor Akhir",
+    },
+  };
+
+  const t = texts[lang];
+
   const handleAnswer = (value) => {
     if (answered) return;
 
     if (value === correctCount) {
       setScore((prev) => prev + 10);
-      setFeedback("✅ Correct!");
+      setFeedback(t.correct);
     } else {
-      setFeedback("❌ Try again!");
+      setFeedback(t.wrong);
     }
     setAnswered(true);
   };
@@ -80,10 +111,28 @@ function CountnChoose() {
 
   return (
     <div style={styles.page}>
+      {/* ===== Sidebar Language Toggle ===== */}
+      <div style={styles.sidebar}>
+        <h4 style={styles.sideTitle}>🌍</h4>
+        <button
+          style={lang === "id" ? styles.langActive : styles.langBtn}
+          onClick={() => setLang("id")}
+        >
+          ID
+        </button>
+        <button
+          style={lang === "en" ? styles.langActive : styles.langBtn}
+          onClick={() => setLang("en")}
+        >
+          EN
+        </button>
+      </div>
+
       <div style={styles.card}>
-        <h2 style={styles.score}>⭐ Score: {score}</h2>
+        <h2 style={styles.score}>⭐ {t.score}: {score}</h2>
+
         <h3 style={styles.progress}>
-          Question {current + 1} / {questions.length}
+          {t.question} {current + 1} / {questions.length}
         </h3>
 
         <div style={styles.objects}>
@@ -104,9 +153,7 @@ function CountnChoose() {
               onClick={() => handleAnswer(num)}
               style={{
                 ...styles.optionBtn,
-                backgroundColor: answered
-                  ? "#ddd"
-                  : "#ffb703",
+                backgroundColor: answered ? "#ddd" : "#ffb703",
               }}
             >
               {num}
@@ -117,9 +164,7 @@ function CountnChoose() {
         {feedback && (
           <h3
             style={{
-              color: feedback.includes("Correct")
-                ? "green"
-                : "red",
+              color: feedback.includes("✅") ? "green" : "red",
             }}
           >
             {feedback}
@@ -128,13 +173,14 @@ function CountnChoose() {
 
         {answered && current < questions.length - 1 && (
           <button style={styles.nextBtn} onClick={handleNext}>
-            Next ▶
+            {t.next}
           </button>
         )}
 
         {answered && current === questions.length - 1 && (
           <h2 style={styles.finish}>
-            🎉 Game Finished! <br /> Final Score: {score}
+            {t.finish} <br />
+            {t.final}: {score}
           </h2>
         )}
       </div>
@@ -142,6 +188,7 @@ function CountnChoose() {
   );
 }
 
+/* ================== STYLES ================== */
 const styles = {
   page: {
     minHeight: "100vh",
@@ -149,10 +196,50 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
     padding: 16,
-    background:
-      "linear-gradient(135deg, #fbc2eb, #a6c1ee)",
-    fontFamily: "'Comic Sans MS', Arial, sans-serif",
+    background: "linear-gradient(135deg, #fbc2eb, #a6c1ee)",
+    fontFamily: "'Comic Sans MS', 'Poppins', cursive",
+    paddingLeft: 80,
   },
+
+  sidebar: {
+    position: "fixed",
+    left: 0,
+    top: 0,
+    width: 70,
+    height: "100vh",
+    background: "#ff9f43",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    paddingTop: 20,
+    boxShadow: "4px 0 12px rgba(0,0,0,0.2)",
+  },
+
+  sideTitle: {
+    color: "#fff",
+    marginBottom: 10,
+    fontSize: 16,
+  },
+
+  langBtn: {
+    background: "#fff",
+    border: "none",
+    borderRadius: 12,
+    padding: "6px 10px",
+    marginBottom: 10,
+    cursor: "pointer",
+    fontSize: 12,
+  },
+
+  langActive: {
+    background: "#2ecc71",
+    color: "#fff",
+    borderRadius: 12,
+    padding: "6px 10px",
+    marginBottom: 10,
+    fontWeight: "bold",
+  },
+
   card: {
     width: "100%",
     maxWidth: 520,
@@ -162,30 +249,20 @@ const styles = {
     boxShadow: "0 10px 30px rgba(0,0,0,0.15)",
     textAlign: "center",
   },
-  score: {
-    marginBottom: 5,
-  },
-  progress: {
-    color: "#555",
-    marginBottom: 15,
-  },
-  objects: {
-    fontSize: 42,
-    marginBottom: 15,
-  },
-  object: {
-    margin: 8,
-  },
-  question: {
-    marginBottom: 15,
-    color: "#333",
-  },
+
+  score: { marginBottom: 5 },
+  progress: { color: "#555", marginBottom: 15 },
+  objects: { fontSize: 42, marginBottom: 15 },
+  object: { margin: 8 },
+  question: { marginBottom: 15, color: "#333" },
+
   options: {
     display: "flex",
     justifyContent: "center",
     gap: 15,
     flexWrap: "wrap",
   },
+
   optionBtn: {
     fontSize: 20,
     padding: "12px 24px",
@@ -194,6 +271,7 @@ const styles = {
     cursor: "pointer",
     minWidth: 80,
   },
+
   nextBtn: {
     marginTop: 20,
     padding: "12px 30px",
@@ -204,6 +282,7 @@ const styles = {
     border: "none",
     cursor: "pointer",
   },
+
   finish: {
     marginTop: 20,
     color: "#6a0572",

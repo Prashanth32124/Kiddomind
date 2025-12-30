@@ -1,14 +1,91 @@
-import { useNavigate } from "react-router-dom";
-import logo from "./images/logo.png";
-import axios from "axios";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import logo from "./images/logo.png";
+
+
+const translations = {
+  en: {
+    title: "Welcome to KiddoMind",
+
+    p1: `KiddoMind is an interactive learning platform created especially for children to help them understand basic concepts in a simple and enjoyable way. The project focuses on early learning skills such as counting, number understanding, memory development, and object recognition.`,
+
+    p2: `Many children find traditional learning methods stressful or boring. KiddoMind addresses this challenge by using interactive activities and game-based learning techniques that make education engaging and meaningful.`,
+
+    whyUsefulTitle: "Why This Project Is Useful for Children",
+
+    p3: `This project helps children improve logical thinking, memory, and problem-solving skills. Instant feedback allows children to understand their mistakes without fear, encouraging continuous learning.`,
+
+    p4: `KiddoMind supports self-paced learning and builds confidence by allowing children to learn through exploration rather than pressure.`,
+
+    whyProvideTitle: "Why We Provide This Product to Children",
+
+    p5: `The purpose of KiddoMind is to support early education through technology in a positive and responsible way. The platform provides a safe digital environment where children can practice skills and build a strong learning foundation.`,
+
+    p6: `By offering this product to children, we aim to replace learning anxiety with curiosity and motivation.`,
+
+    creatorTitle: "Person Behind This Project",
+    creatorName: "Najma",
+    creatorText:
+      "With the vision of creating a child-friendly learning platform where education feels simple, engaging, and enjoyable.",
+
+    conclusionTitle: "Conclusion",
+    conclusion:
+      "KiddoMind is developed to support children in their early learning journey and build a strong foundation for lifelong learning.",
+
+    questionTitle: "Have any questions?",
+    placeholder: "Type your question here...",
+    submit: "Send",
+    courses: "Go to Courses",
+    lang: "Language",
+  },
+
+  id: {
+    title: "Selamat Datang di KiddoMind",
+
+    p1: `KiddoMind adalah platform pembelajaran interaktif yang dibuat khusus untuk anak-anak agar mereka dapat memahami konsep dasar dengan cara yang sederhana dan menyenangkan. Proyek ini berfokus pada keterampilan belajar awal seperti berhitung, pemahaman angka, pengembangan memori, dan pengenalan objek.`,
+
+    p2: `Banyak anak merasa metode pembelajaran tradisional membosankan atau membuat stres. KiddoMind mengatasi tantangan ini dengan menggunakan aktivitas interaktif dan pembelajaran berbasis permainan agar belajar menjadi lebih menarik dan bermakna.`,
+
+    whyUsefulTitle: "Mengapa Proyek Ini Bermanfaat untuk Anak-anak",
+
+    p3: `Proyek ini membantu anak meningkatkan kemampuan berpikir logis, daya ingat, dan pemecahan masalah. Umpan balik instan membantu anak memahami kesalahan mereka tanpa rasa takut.`,
+
+    p4: `KiddoMind mendukung pembelajaran mandiri dan membangun kepercayaan diri dengan memungkinkan anak belajar melalui eksplorasi tanpa tekanan.`,
+
+    whyProvideTitle: "Mengapa Kami Menyediakan Produk Ini untuk Anak-anak",
+
+    p5: `Tujuan KiddoMind adalah mendukung pendidikan awal melalui teknologi dengan cara yang positif dan bertanggung jawab. Platform ini menyediakan lingkungan digital yang aman bagi anak-anak.`,
+
+    p6: `Dengan menyediakan produk ini, kami bertujuan menggantikan kecemasan belajar dengan rasa ingin tahu dan motivasi.`,
+
+    creatorTitle: "Pembuat Proyek",
+    creatorName: "Najma",
+    creatorText:
+      "Dengan visi menciptakan platform belajar ramah anak yang sederhana, menarik, dan menyenangkan.",
+
+    conclusionTitle: "Kesimpulan",
+    conclusion:
+      "KiddoMind dikembangkan untuk mendukung perjalanan belajar awal anak dan membangun fondasi kuat untuk pembelajaran seumur hidup.",
+
+    questionTitle: "Punya pertanyaan?",
+    placeholder: "Tulis pertanyaan kamu di sini...",
+    submit: "Kirim",
+    courses: "Ke Kursus",
+    lang: "Bahasa",
+  },
+};
 
 function Main() {
   const navigate = useNavigate();
-   const [question, setQuestion] = useState("");
-   const [status, setStatus] = useState("");
-  const bb=async()=>{
-   if (question.trim() === "") {
+  const [question, setQuestion] = useState("");
+  const [status, setStatus] = useState("");
+  const [lang, setLang] = useState("id");
+
+  const t = translations[lang];
+
+  const submitQuestion = async () => {
+    if (question.trim() === "") {
       setStatus("Please write a question before submitting.");
       return;
     }
@@ -18,266 +95,186 @@ function Main() {
         "https://backendkiddomind.vercel.app/api/questions/ask",
         { question }
       );
-
       setStatus(response.data.message);
       setQuestion("");
-    } catch (error) {
+    } catch {
       setStatus("Something went wrong. Please try again.");
     }
   };
+
   return (
     <div style={styles.page}>
+      {/* SIDEBAR */}
+      <div style={styles.sidebar}>
+        <h4 style={styles.sideTitle}>🌍 {t.lang}</h4>
+        <button
+          style={lang === "en" ? styles.langActive : styles.langBtn}
+          onClick={() => setLang("en")}
+        >
+          EN
+        </button>
+        <button
+          style={lang === "id" ? styles.langActive : styles.langBtn}
+          onClick={() => setLang("id")}
+        >
+          ID
+        </button>
+      </div>
+
+      {/* CONTENT */}
       <div style={styles.container}>
-
-
         <div style={styles.topBar}>
           <button
-            style={styles.startBtn}
+            style={styles.courseBtn}
             onClick={() => navigate("/Name")}
           >
-            Go to Courses
+            {t.courses}
           </button>
         </div>
 
         <div style={styles.logoWrap}>
-          <img
-            src={logo}
-            alt="KiddoMind Logo"
-            style={styles.logo}
-          />
+          <img src={logo} alt="KiddoMind Logo" style={styles.logo} />
         </div>
 
-        <h1 style={styles.title}>Welcome to KiddoMind</h1>
+        <h1 style={styles.title}>{t.title}</h1>
 
-        <p style={styles.text}>
-          KiddoMind is an interactive learning platform created especially for
-          children to help them understand basic concepts in a simple and
-          enjoyable way. The project focuses on early learning skills such as
-          counting, number understanding, memory development, and object
-          recognition.
-        </p>
+        <p style={styles.text}>{t.p1}</p>
+        <p style={styles.text}>{t.p2}</p>
 
-        <p style={styles.text}>
-          Many children find traditional learning methods stressful or boring.
-          KiddoMind addresses this challenge by using interactive activities and
-          game-based learning techniques that make education engaging and
-          meaningful.
-        </p>
+        <h2 style={styles.subTitle}>{t.whyUsefulTitle}</h2>
+        <p style={styles.text}>{t.p3}</p>
+        <p style={styles.text}>{t.p4}</p>
 
-        <h2 style={styles.subTitle}>Why This Project Is Useful for Children</h2>
+        <h2 style={styles.subTitle}>{t.whyProvideTitle}</h2>
+        <p style={styles.text}>{t.p5}</p>
+        <p style={styles.text}>{t.p6}</p>
 
-        <p style={styles.text}>
-          This project helps children improve logical thinking, memory, and
-          problem-solving skills. Instant feedback allows children to understand
-          their mistakes without fear, encouraging continuous learning.
-        </p>
-
-        <p style={styles.text}>
-          KiddoMind supports self-paced learning and builds confidence by
-          allowing children to learn through exploration rather than pressure.
-        </p>
-
-        <h2 style={styles.subTitle}>Why We Provide This Product to Children</h2>
-
-        <p style={styles.text}>
-          The purpose of KiddoMind is to support early education through
-          technology in a positive and responsible way. The platform provides a
-          safe digital environment where children can practice skills and build
-          a strong learning foundation.
-        </p>
-
-        <p style={styles.text}>
-          By offering this product to children, we aim to replace learning
-          anxiety with curiosity and motivation.
-        </p>
-
-        <h2 style={styles.subTitle}>Person Behind This Project</h2>
-
+        <h2 style={styles.subTitle}>{t.creatorTitle}</h2>
         <div style={styles.creatorBox}>
-          <p style={styles.creatorText}>
-            This project is designed and developed by
-          </p>
-          <h3 style={styles.creatorName}>Najma</h3>
-          <p style={styles.creatorText}>
-            with the vision of creating a child-friendly learning platform where
-            education feels simple, engaging, and enjoyable.
-          </p>
+          <h3 style={styles.creatorName}>{t.creatorName}</h3>
+          <p style={styles.text}>{t.creatorText}</p>
         </div>
 
-        <h2 style={styles.subTitle}>Conclusion</h2>
+        <h2 style={styles.subTitle}>{t.conclusionTitle}</h2>
+        <p style={styles.text}>{t.conclusion}</p>
 
-        <p style={styles.text}>
-          KiddoMind is developed to support children in their early learning
-          journey. By combining education with interactive experiences, the
-          platform helps children learn effectively while enjoying the process.
-          The goal of KiddoMind is to build a strong and positive foundation for
-          lifelong learning.
-        </p>
+        {/* QUESTIONS */}
+        <div style={styles.questionBox}>
+          <h2 style={styles.questionTitle}>{t.questionTitle}</h2>
+          <textarea
+            style={styles.textarea}
+            placeholder={t.placeholder}
+            value={question}
+            onChange={(e) => setQuestion(e.target.value)}
+          />
+          <button style={styles.submitBtn} onClick={submitQuestion}>
+            {t.submit}
+          </button>
+          {status && <p style={styles.status}>{status}</p>}
+        </div>
       </div>
-     <div style={styles.questionWrapper}>
-    <div style={styles.questionSection}>
-      <h2 style={styles.questionHeading}>Have any questions?</h2>
-
-      <textarea
-        style={styles.textarea}
-        placeholder="Type your question here..."
-        value={question}
-        onChange={(e) => setQuestion(e.target.value)}
-        onFocus={(e) =>
-          Object.assign(e.target.style, styles.textareaFocus)
-        }
-        onBlur={(e) =>
-          Object.assign(e.target.style, styles.textarea)
-        }
-      />
-
-      <button style={styles.submitBtn} onClick={bb}>
-        Submit Question
-      </button>
-
-      {status && <p>{status}</p>}
-    </div>
-  </div>
-
     </div>
   );
 }
 
+/* ================== STYLES ================== */
 const styles = {
   page: {
-  minHeight: "100vh",
-  padding: "40px 16px",
-  background: "linear-gradient(135deg, #e0eafc, #cfdef3)",
-  display: "flex",
-  flexDirection: "column",   // ✅ IMPORTANT
-  alignItems: "center",
-  fontFamily: "Arial, sans-serif",
-},
-  container: {
-    maxWidth: 900,
-    backgroundColor: "#ffffff",
-    padding: "35px 40px",
-    borderRadius: 22,
-    boxShadow: "0 15px 35px rgba(0,0,0,0.12)",
-    width: "100%",
-  },
-  topBar: {
+    minHeight: "100vh",
+    background: "linear-gradient(135deg, #ffecd2, #fcb69f)",
     display: "flex",
-    justifyContent: "flex-end",
-    marginBottom: 10,
+    fontFamily: "'Comic Sans MS', 'Poppins', cursive",
+    paddingLeft: 90,
   },
-  startBtn: {
-    padding: "10px 20px",
-    fontSize: 15,
-    borderRadius: 12,
+  sidebar: {
+    position: "fixed",
+    left: 0,
+    top: 0,
+    width: 80,
+    height: "100vh",
+    background: "#ff9f43",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    paddingTop: 20,
+  },
+  sideTitle: { color: "#fff", fontSize: 14, marginBottom: 12 },
+  langBtn: {
+    background: "#fff",
     border: "none",
-    backgroundColor: "#4CAF50",
-    color: "#fff",
+    borderRadius: 14,
+    padding: "6px 10px",
+    marginBottom: 10,
     cursor: "pointer",
   },
-  logoWrap: {
-    display: "flex",
-    justifyContent: "center",
-    marginBottom: 15,
-  },
-  logo: {
-    width: 120,
-    maxWidth: "60%",
-    height: "auto",
-  },
-  title: {
-    textAlign: "center",
-    fontSize: "2.4rem",
-    marginBottom: 25,
-    color: "#2c3e50",
-  },
-  subTitle: {
-    marginTop: 30,
-    marginBottom: 12,
-    fontSize: "1.4rem",
-    color: "#34495e",
-    borderLeft: "5px solid #4CAF50",
-    paddingLeft: 12,
-  },
-  text: {
-    fontSize: 16,
-    lineHeight: 1.8,
-    color: "#555",
-    marginBottom: 14,
-  },
-  creatorBox: {
-    marginTop: 15,
-    padding: 20,
-    borderRadius: 16,
-    backgroundColor: "#f4f8fb",
-    textAlign: "center",
-    boxShadow: "inset 0 0 10px rgba(0,0,0,0.05)",
-  },
-  creatorName: {
-    fontSize: "1.8rem",
-    color: "#4CAF50",
-    margin: "10px 0",
+  langActive: {
+    background: "#2ecc71",
+    color: "#fff",
+    borderRadius: 14,
+    padding: "6px 10px",
+    marginBottom: 10,
     fontWeight: "bold",
-    letterSpacing: 1,
   },
-  creatorText: {
+  container: {
+    maxWidth: 900,
+    background: "#fff",
+    padding: 40,
+    borderRadius: 30,
+    margin: "30px auto",
+  },
+  topBar: { display: "flex", justifyContent: "flex-end" },
+  courseBtn: {
+    background: "#6c5ce7",
+    color: "#fff",
+    border: "none",
+    borderRadius: 18,
+    padding: "10px 20px",
+    cursor: "pointer",
+  },
+  logoWrap: { display: "flex", justifyContent: "center", margin: 20 },
+  logo: { width: 120 },
+  title: { textAlign: "center", fontSize: "2.6rem", color: "#ff6f61" },
+  subTitle: { fontSize: "1.6rem", color: "#6c5ce7", marginTop: 30 },
+  text: { fontSize: 17, lineHeight: 1.8, color: "#444" },
+  creatorBox: {
+    background: "#f1f9ff",
+    padding: 20,
+    borderRadius: 20,
+    textAlign: "center",
+  },
+  creatorName: { color: "#00b894", fontSize: "1.8rem" },
+  questionBox: {
+    marginTop: 40,
+    background: "#ffeaa7",
+    padding: 25,
+    borderRadius: 25,
+  },
+  questionTitle: {
+    textAlign: "center",
+    fontSize: "1.6rem",
+    color: "#d35400",
+  },
+  textarea: {
+    width: "100%",
+    minHeight: 120,
+    borderRadius: 20,
+    padding: 15,
     fontSize: 16,
-    color: "#555",
+    border: "2px solid #f39c12",
+    resize: "none",
   },
-  questionSection: {
-  marginTop: 30,
-  padding: 25,
-  borderRadius: 18,
-  background: "#f9fbff",
-  boxShadow: "0 8px 20px rgba(0,0,0,0.08)",
-},
-
-questionHeading: {
-  fontSize: "1.6rem",
-  marginBottom: 15,
-  color: "#2c3e50",
-  textAlign: "center",
-},
-
-textarea: {
-  width: "100%",
-  minHeight: 120,
-  padding: 14,
-  fontSize: 16,
-  borderRadius: 12,
-  border: "1.5px solid #ccc",
-  outline: "none",
-  resize: "none",
-  fontFamily: "Arial, sans-serif",
-  transition: "border-color 0.3s, box-shadow 0.3s",
-},
-
-textareaFocus: {
-  borderColor: "#4CAF50",
-  boxShadow: "0 0 0 2px rgba(76,175,80,0.2)",
-},
-
-submitBtn: {
-  marginTop: 15,
-  width: "100%",
-  padding: "12px 20px",
-  fontSize: 16,
-  borderRadius: 14,
-  border: "none",
-  background: "linear-gradient(135deg, #4CAF50, #66BB6A)",
-  color: "#fff",
-  cursor: "pointer",
-  fontWeight: "bold",
-  letterSpacing: 0.5,
-  transition: "transform 0.2s ease, box-shadow 0.2s ease",
-},
-questionWrapper: {
-  width: "100%",
-  maxWidth: 900,
-  marginTop: 30,       // pushes it DOWN
-  marginBottom: 40,
-},
-
+  submitBtn: {
+    marginTop: 15,
+    width: "100%",
+    padding: 14,
+    borderRadius: 20,
+    border: "none",
+    background: "#ff7675",
+    color: "#fff",
+    fontSize: 18,
+    cursor: "pointer",
+  },
+  status: { textAlign: "center", marginTop: 10 },
 };
 
 export default Main;
