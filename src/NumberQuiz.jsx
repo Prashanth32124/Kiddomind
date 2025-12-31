@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-/* ========== TEXTS (BILINGUAL) ========== */
+
 const texts = {
   en: {
     title: "🔢 Number Quiz",
@@ -29,7 +29,7 @@ const texts = {
 };
 
 function NumberQuiz() {
-  const [lang, setLang] = useState("id"); // default Indonesian
+  const [lang, setLang] = useState("id"); 
   const t = texts[lang];
 
   const [level, setLevel] = useState(null);

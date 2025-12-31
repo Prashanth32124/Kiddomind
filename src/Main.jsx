@@ -2,38 +2,28 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import logo from "./images/logo.png";
+import creator from "./images/creator.jpg";
 
 /* ================= TRANSLATIONS ================= */
 const translations = {
   en: {
     title: "Welcome to KiddoMind",
     subtitle: "Learn • Play • Grow",
-
     p1: "KiddoMind is an interactive learning platform created especially for children to help them understand basic concepts in a simple and enjoyable way. The project focuses on early learning skills such as counting, number understanding, memory development, and object recognition.",
-
     p2: "Many children find traditional learning methods stressful or boring. KiddoMind addresses this challenge by using interactive activities and game-based learning techniques that make education engaging and meaningful.",
-
     whyUsefulTitle: "Why This Project Is Useful for Children",
-
     p3: "This project helps children improve logical thinking, memory, and problem-solving skills. Instant feedback allows children to understand their mistakes without fear, encouraging continuous learning.",
-
     p4: "KiddoMind supports self-paced learning and builds confidence by allowing children to learn through exploration rather than pressure.",
-
     whyProvideTitle: "Why We Provide This Product to Children",
-
     p5: "The purpose of KiddoMind is to support early education through technology in a positive and responsible way. The platform provides a safe digital environment where children can practice skills and build a strong learning foundation.",
-
     p6: "By offering this product to children, we aim to replace learning anxiety with curiosity and motivation.",
-
     creatorTitle: "Person Behind This Project",
     creatorName: "Najma",
     creatorText:
       "With the vision of creating a child-friendly learning platform where education feels simple, engaging, and enjoyable.",
-
     conclusionTitle: "Conclusion",
     conclusion:
       "KiddoMind is developed to support children in their early learning journey and build a strong foundation for lifelong learning.",
-
     questionTitle: "Have any questions?",
     placeholder: "Type your question here...",
     submit: "Send",
@@ -43,32 +33,21 @@ const translations = {
   id: {
     title: "Selamat Datang di KiddoMind",
     subtitle: "Belajar • Bermain • Tumbuh",
-
     p1: "KiddoMind adalah platform pembelajaran interaktif yang dibuat khusus untuk anak-anak agar mereka dapat memahami konsep dasar dengan cara yang sederhana dan menyenangkan. Proyek ini berfokus pada keterampilan belajar awal seperti berhitung, pemahaman angka, pengembangan memori, dan pengenalan objek.",
-
     p2: "Banyak anak merasa metode pembelajaran tradisional membosankan atau membuat stres. KiddoMind mengatasi tantangan ini dengan menggunakan aktivitas interaktif dan pembelajaran berbasis permainan agar belajar menjadi lebih menarik dan bermakna.",
-
     whyUsefulTitle: "Mengapa Proyek Ini Bermanfaat untuk Anak-anak",
-
     p3: "Proyek ini membantu anak meningkatkan kemampuan berpikir logis, daya ingat, dan pemecahan masalah. Umpan balik instan membantu anak memahami kesalahan mereka tanpa rasa takut.",
-
     p4: "KiddoMind mendukung pembelajaran mandiri dan membangun kepercayaan diri dengan memungkinkan anak belajar melalui eksplorasi tanpa tekanan.",
-
     whyProvideTitle: "Mengapa Kami Menyediakan Produk Ini untuk Anak-anak",
-
     p5: "Tujuan KiddoMind adalah mendukung pendidikan awal melalui teknologi dengan cara yang positif dan bertanggung jawab. Platform ini menyediakan lingkungan digital yang aman bagi anak-anak.",
-
     p6: "Dengan menyediakan produk ini, kami bertujuan menggantikan kecemasan belajar dengan rasa ingin tahu dan motivasi.",
-
     creatorTitle: "Pembuat Proyek",
     creatorName: "Najma",
     creatorText:
       "Dengan visi menciptakan platform belajar ramah anak yang sederhana, menarik, dan menyenangkan.",
-
     conclusionTitle: "Kesimpulan",
     conclusion:
       "KiddoMind dikembangkan untuk mendukung perjalanan belajar awal anak dan membangun fondasi kuat untuk pembelajaran seumur hidup.",
-
     questionTitle: "Punya pertanyaan?",
     placeholder: "Tulis pertanyaan kamu di sini...",
     submit: "Kirim",
@@ -145,6 +124,7 @@ function Main() {
 
         <h2 style={styles.subTitle}>{t.creatorTitle}</h2>
         <div style={styles.creatorBox}>
+          <img src={creator} alt="Creator" style={styles.creatorImage} />
           <h3 style={styles.creatorName}>{t.creatorName}</h3>
           <p style={styles.text}>{t.creatorText}</p>
         </div>
@@ -266,6 +246,15 @@ const styles = {
     padding: 18,
     borderRadius: 18,
     textAlign: "center",
+  },
+
+  creatorImage: {
+    width: 100,
+    height: 100,
+    borderRadius: "50%",
+    objectFit: "cover",
+    marginBottom: 12,
+    border: "4px solid #00b894",
   },
 
   creatorName: {
